@@ -15,7 +15,6 @@
     <button id="insert">Insert </button>
     <button id="reg">Зарегистрироваться</button>
     <button id="signin">Войти</button>
-    <button id="getMarkers">Получить координаты пунктов приёма мусора</button>
 
 
     <!--Firebase Libraries-->
@@ -24,7 +23,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-database.js"></script> 
 
     <script id="MainScript">
-        // Your web app's Firebase configuration
+        // Web app's Firebase configuration
         var firebaseConfig = {
             apiKey: "AIzaSyDxzPOm5301J9e-1qII8h_je7igTDkNLbA",
             authDomain: "trash-51fa1.firebaseapp.com",
@@ -39,8 +38,7 @@
 
         //--------------Ready data-----
         var nameV, genV;
-        var markers = [];
-
+       
         function Ready() {
             nameV = document.getElementById("namebox").value;
             genV = document.getElementById("genbox").value;
@@ -50,17 +48,16 @@
             password = document.getElementById("password").value
         }
 
-        //--------------Insert Process
+        //--------------Insert Process (Test)
         document.getElementById("insert").onclick = function() {
             Ready();
             firebase.database().ref('User/'+nameV).set({
                 NameOfUser: nameV,
                 Gender: genV
             });
-
         }
 
-        //------------reg
+        //------------ Регистрация пользователя
         document.getElementById("reg").onclick = function() {
             Ready();
             console.log(username);
@@ -99,7 +96,7 @@
                 });
         }
 
-        //------------sign in
+        //------------ Авторизация пользователя
         document.getElementById("signin").onclick = function() {
             Ready();
 
@@ -109,41 +106,46 @@
             // All future sign-in request now include tenant ID.
             firebase.auth().signInWithEmailAndPassword(username, password)
             .then(function(result) {
-                // result.user.tenantId should be ‘TENANT_PROJECT_ID’.
+                // Успешная авторизация пользователя
                 console.log(username);
             }).catch(function(error) {
                 // Handle error.
             });
         }
 
-        //-------------------Получение точек     
-        document.getElementById("getMarkers").onclick = function() {
-            console.log("Получение данных");
-        }
-        
+        //------------ Получение точек     
+        // Массив всех маркеров для карты
+        var jsonMarkers = [];
+
         firebase.database().ref('Markers').once('value', snapshot => {
             snapshot.forEach(function(childSnapshot) {
                 var snapKey = childSnapshot.key;
 
+                var marker = {
+                availability: 1,
+                coordinates: [],
+                description: "",
+                type: ""
+                }
+
+                firebase.database().ref('Markers').child(snapKey).child('availability').once('value', Snapshot => {           
+                    marker.availability = Snapshot.val()                    
+                })               
                 firebase.database().ref('Markers').child(snapKey).child('coordinates').once('value', coordSnapshot => {
-                    markers.push(coordSnapshot.val())
+                    marker.coordinates = coordSnapshot.val()                  
+                })              
+                firebase.database().ref('Markers').child(snapKey).child('description').once('value', Snapshot => {
+                    marker.description = Snapshot.val()                    
+                })
+                firebase.database().ref('Markers').child(snapKey).child('type').once('value', Snapshot => {
+                    marker.type = Snapshot.val()                   
                 })
 
-               
-
-
-                //var curUserRef = db.ref('Users').child(childSnapshot.key);
-
-                // curUserRef.child('Lists').child(id).remove();
-                //     curUserRef.update({
-                //     'location': 'main'
-                //     });
+                jsonMarkers.push(marker);
+            
                 });
-        }).then(result => {
-            console.log(markers);
-        //db.ref('Lists').child(id).remove();
+        }).then(result => {           
+            console.log(jsonMarkers);
         });
     </script>
-
-
 </html>
