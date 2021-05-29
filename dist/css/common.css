@@ -34,9 +34,15 @@ html {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding-left: 15rem;
+    padding-right: 15rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
     background-color: white;
     min-height: 10rem;
-    font-size: 2rem;
+    font-size: 2.5rem;
+    letter-spacing: .5rem;
+    font-weight: lighter;
 }
 
 .sign-in-form {
