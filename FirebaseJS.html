@@ -1,0 +1,149 @@
+<html>
+    <head>
+        <title>
+            Write
+        </title>
+    </head>
+    <body>  
+        name <input id ="namebox" type="text"> <br><br> 
+        gender <input id ="genbox" type="text"> <br><br>
+
+        email <input id ="email" type="text"> <br><br> 
+        password <input id ="password" type="text"> <br><br>
+    </body>
+    <br>
+    <button id="insert">Insert </button>
+    <button id="reg">Зарегистрироваться</button>
+    <button id="signin">Войти</button>
+    <button id="getMarkers">Получить координаты пунктов приёма мусора</button>
+
+
+    <!--Firebase Libraries-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-database.js"></script> 
+
+    <script id="MainScript">
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDxzPOm5301J9e-1qII8h_je7igTDkNLbA",
+            authDomain: "trash-51fa1.firebaseapp.com",
+            databaseURL: "https://trash-51fa1-default-rtdb.firebaseio.com",
+            projectId: "trash-51fa1",
+            storageBucket: "trash-51fa1.appspot.com",
+            messagingSenderId: "319492179040",
+            appId: "1:319492179040:web:8b4a8cceed1aa2f41faf05"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        //--------------Ready data-----
+        var nameV, genV;
+        var markers = [];
+
+        function Ready() {
+            nameV = document.getElementById("namebox").value;
+            genV = document.getElementById("genbox").value;
+
+            // регистрация firebase
+            username = document.getElementById("email").value
+            password = document.getElementById("password").value
+        }
+
+        //--------------Insert Process
+        document.getElementById("insert").onclick = function() {
+            Ready();
+            firebase.database().ref('User/'+nameV).set({
+                NameOfUser: nameV,
+                Gender: genV
+            });
+
+        }
+
+        //------------reg
+        document.getElementById("reg").onclick = function() {
+            Ready();
+            console.log(username);
+            console.log(password);
+            
+            firebase.auth().createUserWithEmailAndPassword(username, password)
+                .then(
+                    result => {
+                    
+                    var badges, trashCount, userType, id;
+                        id = firebase.auth().currentUser.uid;
+                        alert(id);
+                        firebase.database().ref('Users/'+firebase.auth().currentUser.uid).set({
+                            badges: [""], 
+                            id: firebase.auth().currentUser.uid,
+                            idMarkers: ["первая метка", "вторая метка"],
+                            trashCount: 0,
+                            userType: "user",
+                            username: username
+                        });            
+                    },
+                    error => {
+                        alert(error);
+                    }
+                )
+                .catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                if (errorCode == 'auth/weak-password') {
+                    alert('The password is too weak.');
+                } else {
+                    alert(errorMessage);
+                }
+                console.log(error);
+                });
+        }
+
+        //------------sign in
+        document.getElementById("signin").onclick = function() {
+            Ready();
+
+            console.log(username);
+            console.log(password);
+            
+            // All future sign-in request now include tenant ID.
+            firebase.auth().signInWithEmailAndPassword(username, password)
+            .then(function(result) {
+                // result.user.tenantId should be ‘TENANT_PROJECT_ID’.
+                console.log(username);
+            }).catch(function(error) {
+                // Handle error.
+            });
+        }
+
+        //-------------------Получение точек     
+        document.getElementById("getMarkers").onclick = function() {
+            console.log("Получение данных");
+        }
+        
+        firebase.database().ref('Markers').once('value', snapshot => {
+            snapshot.forEach(function(childSnapshot) {
+                var snapKey = childSnapshot.key;
+
+                firebase.database().ref('Markers').child(snapKey).child('coordinates').once('value', coordSnapshot => {
+                    markers.push(coordSnapshot.val())
+                })
+
+               
+
+
+                //var curUserRef = db.ref('Users').child(childSnapshot.key);
+
+                // curUserRef.child('Lists').child(id).remove();
+                //     curUserRef.update({
+                //     'location': 'main'
+                //     });
+                });
+        }).then(result => {
+            console.log(markers);
+        //db.ref('Lists').child(id).remove();
+        });
+    </script>
+
+
+</html>
