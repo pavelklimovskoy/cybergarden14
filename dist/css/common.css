@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
+@import url('header.css');
+
+html {
+    font-size: 62.5%;
+}
+
+.body {
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: .2rem;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.content {
+    position: relative;
+    height: 92%;
+}
+
+.content__map {
+    position: relative;
+    height: 100%;
+    background-color: gray;
+}
+
+.footer {
+    z-index: -1;
+    color: #777777;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    min-height: 10rem;
+    font-size: 2rem;
+}
+
+.sign-in-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    color: #777777;
+    font-size: 3.6rem;
+    background-color: white;
+}
+
+.login-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48.6rem;
+}
+
+.input_login {
+    width: 33rem;
+    padding: 1rem;
+    color: #CEC951;
+    background-color: #FFFFF2;
+    font-size: 3rem;
+    border: 1px solid #CEC951;
+}
+
+.login-form__login {
+    margin-top: 4rem;
+
+}
+
+.login-form__password {
+    margin-top: 6rem;
+}
+
+.button_sign-in {
+    margin-top: 5rem;
+    background-color: #E5E5E5;
+    color: #777777;
+    font-size: 3rem;
+    padding: 1rem;
+    width: fit-content;
+    border: 1px solid #777777;
+}
+
+link {
+    text-decoration: none;
+}
+
+.link_sign-up {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    font-size: 2.4rem;
+    font-weight: lighter;
+    color: #333;
+}
+
+.form__title {
+    padding-top: 4rem;
+}
+
+._hide {
+    display: none;
+}
+
+.form__close {
+    position: absolute;
+    right: 1rem;
+}
+
+.is-admin-radio {
+    display: flex;
+    margin-left: 22rem;
+    margin-top: 7rem;
+    width: 100%;
+}
+
+#isAdminFalse {
+    margin-left: 7rem;
+}
+
+.sign-up-form .link_sign-up {
+    margin: 0;
+}
+.is-admin {
+    margin: 5rem;
+}
+
+.sign-up-form .button_sign-in {
+    margin-top: 2rem;
+}
+
+
+.is-admin-radio {
+    margin-top: 0;
+    margin-bottom: 3rem;
+}
+
+.rubbish-tank-info {
+    position: absolute;
+    top: 10rem;
+    left: 10rem;
+    width: 32.3rem;
+    height: 30.4rem;
+    background-color: white;
+    padding: 6rem 2rem 4rem;
+}
+
+.rubbish-tank-info__address {
+    font-size: 1.7rem;
+}
+
+.rubbish-tank-info__description {
+    font-size: 1.7rem;
+}
+
+.rubbish-tank-info__wish-list {
+    content: url("../img/icons8-star0.png");
+    width: 3rem;
+}
+
+.rubbish-tank-info__head {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 4rem;
+}
+
+.rubbish-tank-info__close {
+    position: absolute;
+    right: 1rem;
+    top: 2rem;
+    font-size: 2rem;
+}
